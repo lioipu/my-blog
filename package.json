@@ -1,0 +1,15 @@
+{
+  "name": "Scrim-s03mi9m",
+  "description": "https://scrimba.com/frontend-path-c0j/~0kv/s06ne3b84j/head",
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "uuid": "^11.1.0",
+    "uuidv7": "^1.0.2",
+    "vite": "latest"
+  }
+}
