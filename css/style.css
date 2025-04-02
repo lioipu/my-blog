@@ -50,7 +50,7 @@ img {
     color: #090909;
 }
 
-a {
+.link, .blog  {
     font-family: inherit;
     font-size: 0.75rem;
     text-decoration: none;
@@ -73,12 +73,17 @@ a {
 
 
 /************************** LAYOUT *************************/
-#main {
-    height: 350px;
+#main-post-container {
+    display: block;
     background-image: url("/images/my-study-desk-iphone-copy.png");
+    height: 350px;
     background-size: cover;
     color: white;
     
+}
+
+a {
+    text-decoration: none;
 }
 
 .post-image {
@@ -88,7 +93,11 @@ a {
 
 }
 
-#container {
+#post-container {
+    padding: 3em 1.25em 0.5em 1.25em;       
+}
+
+#posts-container {
     display: grid;
     grid-template-columns:1em 1fr 1em;
     grid-template-areas: 
@@ -112,6 +121,10 @@ footer {
     background: #202020;
     padding:2em ;
 
+}
+
+#post-container article .post-image {
+    padding: 2em 0em;
 }
 
 /************************ TYPOGRAPHY **************************/
@@ -149,6 +162,15 @@ p {
     color: #141414;
 }
 
+#post-container article #date , #post-container article #content{
+    color: #151515;
+}
+#post-container article h2 {
+    padding: 0.35em 0em;
+    color: #151515;
+
+}
+
 .post-content {
     font-size: 1rem;
     line-height: 125%;
@@ -175,13 +197,27 @@ h2 {
 
 }
 
-h3 {
+footer h3 {
     font-weight: 700;
     font-size: 12px;
     letter-spacing: -3%;
     text-align: center;
     margin: 0.25em 0em;
     color: #ECECEC;
+}
+
+#post-container article p {
+    font-size: 0.9rem;
+    color: #151515;
+}
+
+#post-container article h3 {
+    font-family: Source Sans Pro;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #151515;
 }
 
 #copyright {
