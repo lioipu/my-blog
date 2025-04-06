@@ -10,7 +10,7 @@ document.addEventListener('click', e => {
     let currentEventUuid = e.currentTarget.activeElement.dataset.postUuid
     if(currentEventUuid) {
         state.article = true
-        render(posts.find(post => post.uuid === currentEventUuid))
+        render(3, posts.find(post => post.uuid === currentEventUuid))
     } else if(e.target.className === 'link') {
         if(e.target.dataset.home === 'home') {
             state.home = true
@@ -20,8 +20,17 @@ document.addEventListener('click', e => {
             state.about = true
             render()
         }
+    } else if(e.target.dataset.viewMoreBtn) {
+        console.log('viewMoreBtn')
+        // view more btn
+        viewMoreBtnClickHandler()
     }
 })
+
+function viewMoreBtnClickHandler() {
+    state.home = true
+    render(0)
+}
 
 /* give us the main article that were on at the moment and present it on the screen */
 function getMain(currentPost = posts.find( post => post.isMain === true)) {
@@ -78,11 +87,14 @@ function getMain(currentPost = posts.find( post => post.isMain === true)) {
     return postStr
 }
 
-function getPostsList() {
+function getPostsList(size) {
     let postsStr = `<div id="posts">`
     if(state.article || state.about) {
-        postsStr += `<h4>Recent posts</h4>`
+        document.getElementById('recent-post-title').innerHTML = 'Recent posts'
+    } else {
+        document.getElementById('recent-post-title').innerHTML = ''
     }
+    console.log('size:' + size)
     postsStr += posts.filter( post => post.isMain === false).map( post => {
         return `<a class="blog" href="#" data-post-uuid="${post.uuid}">
             <article>
@@ -95,19 +107,23 @@ function getPostsList() {
             </article>
         </a>
         `
-    }).slice(3).join('')
+    }).slice(size).join('')
 
-    postsStr += `<button id="btn"  >View More</button> </div`
+    if(state.home) {
+        document.getElementById('btn-container').innerHTML = `
+        <button id="btn" data-view-more-btn="view-more-btn" >View More</button>`
+    } else {
+        document.getElementById('btn-container').innerHTML = ''
+    }
 
     
 
     return postsStr
 }
 
-function render(currentPost = posts.find( post => post.isMain === true)) {
-    document.getElementById('posts-container').innerHTML = getPostsList()
+function render( size = 3, currentPost = posts.find( post => post.isMain === true)) {
+    document.getElementById('posts-container').innerHTML = getPostsList(size)
     document.getElementById('main').innerHTML = getMain(currentPost)
-
 }
 
 render()

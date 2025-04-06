@@ -7,7 +7,7 @@ body {
 
 /***************************** NAVIGATION ************************ */
 
-nav {    
+nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -65,10 +65,9 @@ img{
     font-family: Source Sans Pro;
     font-weight: 700;
     font-size: 16px;
-    text-align: center;
     text-decoration: underline;
     text-decoration-thickness: 0%;
-    margin: 1em 0;
+    margin: 0.65em 0em 3em 0em;
 
 }
 
@@ -81,6 +80,10 @@ img{
     background-size: cover;
     color: white;
     
+}
+
+#btn-container {
+    text-align: center;
 }
 
 a {
@@ -161,7 +164,12 @@ footer {
 
 h4 {
     text-align: center;
-    margin: 0.75em 0em;
+    size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2.75em;
+    margin-bottom: 0.75;
+    color: #141414;
+
 }
 
 #title {
@@ -291,10 +299,34 @@ footer h3 {
 /* ************************** MEDIA QUERY **************************/
 
  @media(min-width: 800px) {
+    #btn {
+        grid-area: btn;
+        grid-column-end: span 3;
+
+    }
     #posts{
-    grid-template-columns: repeat(3, 1fr) ;
+        grid-template-columns: repeat(3, 1fr) ;
         grid-template-areas: 
-            'blog blog blog'
-        ;
+        'blog blog blog';
+    }
+    
+    #posts-container {
+        grid-template-columns: 2em repeat(3, 1fr) 2em ;
+        grid-template-areas: 
+        '. blog blog blog .';
+
+    }
+
+    #logo {
+        padding-left: 3em
+    }
+
+    #links {
+        padding-right: 3em;
+    }
+
+    #main-post {
+        padding-left: 2.5em;
+        max-width: 650px;
     }
 }
