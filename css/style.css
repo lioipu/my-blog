@@ -73,11 +73,40 @@ img{
 
 
 /************************** LAYOUT *************************/
+
+#main-post-container {
+    --sz: min(2.5vw, 10.5vw); /* Responsive sizing based on viewport */
+    --c0: #ffffff00;
+    --c1: #bdd0e1;
+    --c2: #809bb9;
+    --c3: #415a77;
+    --ts: 50% / calc(var(--sz) * 13.25) calc(var(--sz) * 11.7);
+    
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    background:
+        repeating-conic-gradient(#3b354730 0.00001%, var(--c0) 0.00005%, var(--c0) 0.00035%, var(--c0) 0.00005%) var(--ts),
+        repeating-conic-gradient(#35638b59 0.00002%, var(--c0) 0.00008%, var(--c0) 0.0008%, var(--c0) 0.00008%) var(--ts),
+        repeating-linear-gradient(90deg, var(--c0) 0 24.33%, var(--c3) 0 25%) var(--ts),
+        linear-gradient(210deg, var(--c0) 0 80%, var(--c3) calc(80% + 1px) 80.5%, var(--c0) calc(80.5% + 1px) 100%) var(--ts),
+        conic-gradient(from -90deg at 49.75% 101%, var(--c1) 0 30deg, var(--c0) 0 150deg, var(--c2) 0 60deg) var(--ts),
+        conic-gradient(from -180deg at 24.5% 50.5%, var(--c1) 0 119deg, var(--c0) 0 100%) var(--ts),
+        conic-gradient(from 120deg at 74.5% 50%, var(--c3) 0 120deg, var(--c0) 0 100%) var(--ts),
+        conic-gradient(from 180deg at 49.5% 34%, var(--c2) 0 60deg, var(--c0) 0 100%) var(--ts),
+        conic-gradient(from -120deg at 50% 34%, var(--c3) 0 60deg, var(--c0) 0 100%) var(--ts),
+        conic-gradient(from 0deg at 74.5% 17.5%, var(--c2) 0 60deg, var(--c3) 0 121deg, var(--c0) 0 100%) var(--ts),
+        linear-gradient(150deg, var(--c0) 0 40%, var(--c3) calc(40% + 1px) 40.5%, var(--c0) calc(40.5% + 1px) 100%) var(--ts),
+        linear-gradient(90deg, var(--c0) 0 50%, var(--c2) 0 75%, var(--c0) 0 100%) var(--ts),
+        repeating-linear-gradient(90deg, var(--c1) 0 24.33%, var(--c3) 0 25%) var(--ts);
+    
+}
+
 #main-post-container {
     display: block;
-    background-image: url("/images/my-study-desk-iphone-copy.png");
-    height: 350px;
-    background-size: cover;
+    height: 295px;
+    /* background-size: cover; */
     color: white;
     
 }
@@ -281,7 +310,7 @@ footer h3 {
 
 #main-post {
     padding: 5.5em 1.25em 0em 1.25em;
-    text-shadow: 1px 1px 2px rgba(0,0,0, 0.25);
+    text-shadow: 1px 1px 0px rgba(0,0,0,1);
 }
 
 
@@ -329,4 +358,14 @@ footer h3 {
         padding-left: 2.5em;
         max-width: 650px;
     }
+
+    #post-container {
+        padding-left: 7.8rem;
+        padding-right:  7.8rem;
+    }
+
+    #main-post {
+        padding: 9em 1.25em 0em 1.25em;
+    }       
+    
 }

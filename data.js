@@ -17,7 +17,7 @@ export const posts = [
     },
     {
       isMain: false,
-      image: "images/article-image-01.png",
+      image: "images/blog-one.png",
       date: "JULY 23, 2022",
       title: 'Blog one',
       intro: `I'm excited to start a new learning journey as a Scrimba Bootcamp student! After several months of learning in the Frontend Developer Career Path.`,
@@ -30,7 +30,7 @@ export const posts = [
     }, 
     {
       isMain: false,
-      image: "images/article-image-01.png",
+      image: "images/blog-two.png",
       date: "JULY 23, 2022",
       title: 'Blog one',
       intro: `I'm excited to start a new learning journey as a Scrimba Bootcamp student! After several months of learning in the Frontend Developer Career Path.`,
@@ -43,7 +43,7 @@ export const posts = [
     }, 
     {
       isMain: false,
-      image: "images/article-image-01.png",
+      image: "images/blog-three.png",
       date: "JULY 23, 2022",
       title: 'Blog one',
       intro: `I'm excited to start a new learning journey as a Scrimba Bootcamp student! After several months of learning in the Frontend Developer Career Path.`,
@@ -56,7 +56,7 @@ export const posts = [
     },
     {
         isMain: false,
-        image: "images/article-image-01.png",
+        image: "images/blog-four.png",
         date: "JULY 23, 2022",
         title: 'Blog one',
         intro: `I'm excited to start a new learning journey as a Scrimba Bootcamp student! After several months of learning in the Frontend Developer Career Path.`,
@@ -69,7 +69,7 @@ export const posts = [
     }, 
     {
         isMain: false,
-        image: "images/article-image-01.png",
+        image: "images/blog-five.png",
         date: "JULY 23, 2022",
         title: 'Blog two',
         intro: `I'm excited to start a new learning journey as a Scrimba Bootcamp student! After several months of learning in the Frontend Developer Career Path.`,
@@ -82,7 +82,7 @@ export const posts = [
     }, 
     {
         isMain: false,
-        image: "images/article-image-01.png",
+        image: "images/blog-six.png",
         date: "JULY 23, 2022",
         title: 'Blog three',
         intro: `I'm excited to start a new learning journey as a Scrimba Bootcamp student! After several months of learning in the Frontend Developer Career Path.`,
