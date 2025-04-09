@@ -1,5 +1,4 @@
-html, 
-body {
+html, body {
     margin: 0;
     padding: 0;
     font-family: Source Sans Pro;
@@ -36,7 +35,6 @@ img{
     width: 100%;
 }
 
-
 #logo-img {
     width: 23px;
     height: 23px;
@@ -45,19 +43,13 @@ img{
 /*************************** LINKS **************************/
 
 /* check why this dosent work */
-.link:hover {
-    color: red;
-
-}
 
 #links {
     padding-right: 1.5em;
     display: inline-block;
     font-weight: 600;
     text-decoration: none;
-    color: #090909;
 }
-
 
 
 .link, .blog  {
@@ -65,18 +57,32 @@ img{
     font-size: 0.75rem;
     text-decoration: none;
     color:#090909;
+    transition: color 0.5s;
     margin-left: 1.5em;
 }
 
+#home-link:hover , #about-link:hover{
+    color: #4c5c68 ;
+
+}
+
+
 #btn {
+    cursor: pointer;
     border: none;
     background: white;
+    transition: color 0.5s;
     font-family: Source Sans Pro;
     font-weight: 700;
     font-size: 16px;
     text-decoration: underline;
     text-decoration-thickness: 0%;
     margin: 0.65em 0em 3em 0em;
+
+}
+
+#btn:hover {
+    color: #4c5c68 ;
 
 }
 
