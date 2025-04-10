@@ -4,7 +4,7 @@
 export const posts = [
   { 
     isMain: true,
-    isOn: false,
+    isOn: true,
     image: "images/my-study-desk-iphone-copy.png",
     date: "MARCH 29, 2025",
     title: 'There are many ways to reach the same goal.',

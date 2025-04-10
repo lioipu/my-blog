@@ -1,28 +1,26 @@
 import {posts} from './data.js'
 
-let state = ''
+
+
 
 document.addEventListener('click', e => {
+    
     let currentEventUuid = e.currentTarget.activeElement.dataset.postUuid
+    let currentPost = postsData.find(post => post.uuid === currentEventUuid)
+    postsData.find(post => post.isOn === true).isOn = false
+    
     //if were clicked on article were going to get in here
     if(currentEventUuid) {
-        state = 'ARTICLE'
-        saveToLocalStorage()
-        render(3, postsData.find(post => post.uuid === currentEventUuid))
-    //if were clicked on home or about page were going to get in here
+        clickArticleHandler(currentPost)
+        //if were clicked on home or about page were going to get in here
     } else if(e.target.className === 'link') {
         if(e.target.dataset.home === 'home') {
-            state = 'HOME'
-            saveToLocalStorage()
-            render()
+            clickHomeBtnHandler(currentPost)
         } else {
-            state = 'ABOUT'
-            saveToLocalStorage()
-            render()
+            clickAboutBtnleHandler(currentPost)
         }
     // when view more button is pressed
     } else if(e.target.dataset.viewMoreBtn) {
-        console.log('viewMoreBtn')
         // view more btn
         viewMoreBtnClickHandler()
     }
@@ -30,34 +28,61 @@ document.addEventListener('click', e => {
 
 // localStorage.clear()
 
-let postsData = []
+/************************* managing local storage *************************/
 
 if(localStorage.getItem('state') ) {
-    state = JSON.parse(localStorage.getItem('state'))
-}
-if(localStorage.getItem('postsData')) {
-    postsData = JSON.parse(localStorage.getItem('postsData'))
-    console.log('if')
+    var state = JSON.parse(localStorage.getItem('state'))
 } else {
-    console.log('else')
+    var state = 'HOME'
+}
+
+if(localStorage.getItem('postsData')) {
+    var postsData = JSON.parse(localStorage.getItem('postsData'))
+} else {
+    var postsData = []
     posts.forEach(post => postsData.push(post))
 }
 
+
+
 function saveToLocalStorage() {
-    console.log(state)
     localStorage.setItem('state', JSON.stringify(state))
     localStorage.setItem('postsData', JSON.stringify(postsData))
+}
+
+function clickArticleHandler(currentPost = postsData.find(post => post.isOn === true)) {
+    state = 'ARTICLE'
+    postsData.find(post => post.uuid === currentPost.uuid).isOn = true
+    saveToLocalStorage()
+    render(3, currentPost)
+}
+
+function clickHomeBtnHandler(currentPost = postsData.find(post => post.isMain === true)) {
+    postsData.find(post => post.isMain === true).isOn = true
+    state = 'HOME'
+    saveToLocalStorage()    
+    render(3, currentPost)
+}
+
+function clickAboutBtnleHandler(currentPost = postsData.find(post => post.isMain === true)) {
+    postsData.find(post => post.isMain === true).isOn = true
+    state = 'ABOUT'
+    saveToLocalStorage()    
+    render(3, currentPost)
 }
 
 
 function viewMoreBtnClickHandler() {
     state = 'HOME'
+    saveToLocalStorage()    
     render(postsData.length)
 }
 
 /* give us the main article that were on at the moment and present it on the screen */
-function getMain(currentPost = postsData.find( post => post.isMain === true)) {
+function getMainArticle(currentPost) {
+    
     let postStr = ''
+
     if(state === 'HOME') {
         postStr = `<a href="#" id="main-post-container" data-post-uuid="${currentPost.uuid}" >
             <article id="main-post">
@@ -73,9 +98,6 @@ function getMain(currentPost = postsData.find( post => post.isMain === true)) {
             <article>
         `
         if(state === 'ARTICLE') {
-            console.log(postsData.find( post => post.isOn === true))
-            postsData.find( post => post.isOn === true).isOn = false
-            currentPost.isOn = true
             postStr += `
                 <p id="date">${currentPost.date}</p>
                 <h2>${currentPost.title}</h2>
@@ -93,7 +115,6 @@ function getMain(currentPost = postsData.find( post => post.isMain === true)) {
 
             `
         }
-
         for(let i = 0 ; i < currentPost.content.titles.length ; i++) {
             postStr += `<h3>${currentPost.content.titles[i]}</h3>
                 <p>${currentPost.content.contents[i]}</p>
@@ -102,22 +123,23 @@ function getMain(currentPost = postsData.find( post => post.isMain === true)) {
             postStr += `
             </article>
         </div>`
-        } else {
-
-
-        }
-    
+    }
+    saveToLocalStorage()
+    console.log(postsData)
     return postStr
 }
 
 function getPostsList(size, currentPost) {
+    
     let postsStr = `<div id="posts">`
+    
     if(state === 'ARTICLE' || state === 'ABOUT') {
         document.getElementById('recent-post-title').innerHTML = 'Recent posts'
     } else {
         document.getElementById('recent-post-title').innerHTML = ''
     }
-    postsStr += posts.filter( post => ( post.isMain === false ) && ( post.isOn === false ) )
+    
+    postsStr += postsData.filter( post => ( post.isMain === false ) && ( post.isOn === false ) )
     .map( post => {
         return `<a class="blog" href="#" data-post-uuid="${post.uuid}">
             <article>
@@ -131,7 +153,6 @@ function getPostsList(size, currentPost) {
         </a>
         `
     }).slice(0, size).join('')
-
     // currentPost.isOn = false
 
     if(state === 'HOME') {
@@ -140,19 +161,13 @@ function getPostsList(size, currentPost) {
     } else {
         document.getElementById('btn-container').innerHTML = ''
     }
-
-
-
     return postsStr
 }
 
-function render( size = 3, currentPost = postsData.find( post => post.isMain === true)) {
-    document.getElementById('main').innerHTML = getMain(currentPost)
+function render( size = 3, currentPost = postsData.find( post => post.isOn === true )) {
+    document.getElementById('main').innerHTML = getMainArticle(currentPost)
     document.getElementById('posts-container').innerHTML = getPostsList(size, currentPost)
 }
 
-if(state === '') {
-    state = 'HOME'
-}
 saveToLocalStorage()
 render()
