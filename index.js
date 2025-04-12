@@ -1,14 +1,35 @@
 import {posts} from './data.js'
 
+const SIZE = 3
 
-
+window.addEventListener('beforeunload', () => {
+    sessionStorage.setItem('lastUnloadTime', Date.now().toString());
+  })
+  
+  // When page loads
+  window.addEventListener('load', () => {
+    const lastUnload = sessionStorage.getItem('lastUnloadTime');
+    if (lastUnload) {
+      const timeDiff = Date.now() - parseInt(lastUnload, 10);
+      
+      if (timeDiff < 2000) {
+        console.log('Page was refreshed (quick return)');
+      } else {
+        console.log('Page was likely reopened after being closed');
+        state = 'HOME'
+        saveToLocalStorage()
+      }
+    } else {
+      console.log('First page load or sessionStorage was cleared');
+    }
+  })
 
 document.addEventListener('click', e => {
-    
+
     let currentEventUuid = e.currentTarget.activeElement.dataset.postUuid
     let currentPost = postsData.find(post => post.uuid === currentEventUuid)
     postsData.find(post => post.isOn === true).isOn = false
-    
+
     //if were clicked on article were going to get in here
     if(currentEventUuid) {
         clickArticleHandler(currentPost)
@@ -36,6 +57,12 @@ if(localStorage.getItem('state') ) {
     var state = 'HOME'
 }
 
+if(localStorage.getItem('size')) {
+    var size = JSON.parse(localStorage.getItem('size'))
+} else {
+    var size = SIZE
+}
+
 if(localStorage.getItem('postsData')) {
     var postsData = JSON.parse(localStorage.getItem('postsData'))
 } else {
@@ -47,40 +74,44 @@ if(localStorage.getItem('postsData')) {
 
 function saveToLocalStorage() {
     localStorage.setItem('state', JSON.stringify(state))
+    localStorage.setItem('size', JSON.stringify(size))
     localStorage.setItem('postsData', JSON.stringify(postsData))
 }
 
 function clickArticleHandler(currentPost = postsData.find(post => post.isOn === true)) {
-    state = 'ARTICLE'
     postsData.find(post => post.uuid === currentPost.uuid).isOn = true
+    state = 'ARTICLE'
+    size = SIZE
     saveToLocalStorage()
-    render(3, currentPost)
+    render(size, currentPost)
 }
 
 function clickHomeBtnHandler(currentPost = postsData.find(post => post.isMain === true)) {
     postsData.find(post => post.isMain === true).isOn = true
     state = 'HOME'
+    size = SIZE
     saveToLocalStorage()    
-    render(3, currentPost)
+    render(size, currentPost)
 }
 
 function clickAboutBtnleHandler(currentPost = postsData.find(post => post.isMain === true)) {
     postsData.find(post => post.isMain === true).isOn = true
     state = 'ABOUT'
-    saveToLocalStorage()    
-    render(3, currentPost)
+    size = SIZE
+    saveToLocalStorage()
+    render(size, currentPost)
 }
 
-
 function viewMoreBtnClickHandler() {
+    postsData.find(post => post.isMain === true).isOn = true
     state = 'HOME'
-    saveToLocalStorage()    
-    render(postsData.length)
+    size = postsData.length
+    saveToLocalStorage()
+    render(size)
 }
 
 /* give us the main article that were on at the moment and present it on the screen */
 function getMainArticle(currentPost) {
-    
     let postStr = ''
 
     if(state === 'HOME') {
@@ -125,7 +156,6 @@ function getMainArticle(currentPost) {
         </div>`
     }
     saveToLocalStorage()
-    console.log(postsData)
     return postStr
 }
 
@@ -153,7 +183,6 @@ function getPostsList(size, currentPost) {
         </a>
         `
     }).slice(0, size).join('')
-    // currentPost.isOn = false
 
     if(state === 'HOME') {
         document.getElementById('btn-container').innerHTML = `
@@ -164,10 +193,11 @@ function getPostsList(size, currentPost) {
     return postsStr
 }
 
-function render( size = 3, currentPost = postsData.find( post => post.isOn === true )) {
+function render( size , currentPost = postsData.find( post => post.isOn === true )) {
+    console.log(postsData)
     document.getElementById('main').innerHTML = getMainArticle(currentPost)
     document.getElementById('posts-container').innerHTML = getPostsList(size, currentPost)
 }
 
 saveToLocalStorage()
-render()
+render(size)
