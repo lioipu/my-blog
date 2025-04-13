@@ -2,25 +2,26 @@ import {posts} from './data.js'
 
 const SIZE = 3
 
+/***************** event listeners handling *****************/
+
 window.addEventListener('beforeunload', () => {
-    sessionStorage.setItem('lastUnloadTime', Date.now().toString());
+    localStorage.setItem('lastUnloadTime', JSON.stringify(Date.now().toString()));
   })
   
   // When page loads
   window.addEventListener('load', () => {
-    const lastUnload = sessionStorage.getItem('lastUnloadTime');
+    const lastUnload = JSON.parse(localStorage.getItem('lastUnloadTime'));
     if (lastUnload) {
       const timeDiff = Date.now() - parseInt(lastUnload, 10);
-      
-      if (timeDiff < 2000) {
+      if (timeDiff < 100) {
         console.log('Page was refreshed (quick return)');
       } else {
         console.log('Page was likely reopened after being closed');
-        state = 'HOME'
-        saveToLocalStorage()
-      }
-    } else {
-      console.log('First page load or sessionStorage was cleared');
+        postsData.find( post => post.isOn === true).isOn = false
+        clickHomeBtnHandler()
+    }
+} else {
+    console.log('First page load or sessionStorage was cleared');
     }
   })
 
@@ -48,7 +49,6 @@ document.addEventListener('click', e => {
 })
 
 // localStorage.clear()
-
 /************************* managing local storage *************************/
 
 if(localStorage.getItem('state') ) {
@@ -194,7 +194,6 @@ function getPostsList(size, currentPost) {
 }
 
 function render( size , currentPost = postsData.find( post => post.isOn === true )) {
-    console.log(postsData)
     document.getElementById('main').innerHTML = getMainArticle(currentPost)
     document.getElementById('posts-container').innerHTML = getPostsList(size, currentPost)
 }
