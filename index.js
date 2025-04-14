@@ -1,6 +1,14 @@
 import {posts} from './data.js'
+const STATES = {
+    HOME: 'HOME',
+    ARTICLE: 'ARTICLE',
+    ABOUT: 'ABOUT'
+}
 
 const SIZE = 3
+let state = 'HOME'
+let size = SIZE
+let postsData = []
 
 /***************** event listeners handling *****************/
 
@@ -18,7 +26,7 @@ window.addEventListener('beforeunload', () => {
       } else {
         console.log('Page was likely reopened after being closed');
         postsData.find( post => post.isOn === true).isOn = false
-        clickHomeBtnHandler()
+        updateState(STATES.HOME, SIZE, postsData.find( post => post.isMain === true))
     }
 } else {
     console.log('First page load or sessionStorage was cleared');
@@ -29,22 +37,25 @@ document.addEventListener('click', e => {
 
     let currentEventUuid = e.currentTarget.activeElement.dataset.postUuid
     let currentPost = postsData.find(post => post.uuid === currentEventUuid)
-    postsData.find(post => post.isOn === true).isOn = false
-
+    console.log(postsData)
+    
     //if were clicked on article were going to get in here
     if(currentEventUuid) {
+        postsData.find(post => post.isOn === true).isOn = false
         clickArticleHandler(currentPost)
         //if were clicked on home or about page were going to get in here
     } else if(e.target.className === 'link') {
+        postsData.find(post => post.isOn === true).isOn = false
         if(e.target.dataset.home === 'home') {
-            clickHomeBtnHandler(currentPost)
+            updateState(STATES.HOME, SIZE, postsData.find(post => post.isMain === true))
         } else {
-            clickAboutBtnleHandler(currentPost)
+            updateState(STATES.ABOUT, SIZE, postsData.find(post => post.isMain === true))
         }
-    // when view more button is pressed
+        // when view more button is pressed
     } else if(e.target.dataset.viewMoreBtn) {
+        postsData.find(post => post.isOn === true).isOn = false
         // view more btn
-        viewMoreBtnClickHandler()
+        updateState(STATES.HOME, postsData.length, postsData.find(post => post.isMain === true))
     }
 })
 
@@ -52,25 +63,23 @@ document.addEventListener('click', e => {
 /************************* managing local storage *************************/
 
 if(localStorage.getItem('state') ) {
-    var state = JSON.parse(localStorage.getItem('state'))
+    state = JSON.parse(localStorage.getItem('state'))
 } else {
-    var state = 'HOME'
+    state = STATES.HOME
 }
 
 if(localStorage.getItem('size')) {
-    var size = JSON.parse(localStorage.getItem('size'))
+    size = JSON.parse(localStorage.getItem('size'))
 } else {
-    var size = SIZE
+    size = SIZE
 }
 
 if(localStorage.getItem('postsData')) {
-    var postsData = JSON.parse(localStorage.getItem('postsData'))
+    postsData = JSON.parse(localStorage.getItem('postsData'))
 } else {
-    var postsData = []
+    postsData = []
     posts.forEach(post => postsData.push(post))
 }
-
-
 
 function saveToLocalStorage() {
     localStorage.setItem('state', JSON.stringify(state))
@@ -78,43 +87,26 @@ function saveToLocalStorage() {
     localStorage.setItem('postsData', JSON.stringify(postsData))
 }
 
-function clickArticleHandler(currentPost = postsData.find(post => post.isOn === true)) {
-    postsData.find(post => post.uuid === currentPost.uuid).isOn = true
-    state = 'ARTICLE'
+function clickArticleHandler(currentPost) {
+    currentPost.isOn = true
+    state = STATES.ARTICLE
     size = SIZE
     saveToLocalStorage()
     render(size, currentPost)
 }
 
-function clickHomeBtnHandler(currentPost = postsData.find(post => post.isMain === true)) {
-    postsData.find(post => post.isMain === true).isOn = true
-    state = 'HOME'
-    size = SIZE
-    saveToLocalStorage()    
-    render(size, currentPost)
-}
-
-function clickAboutBtnleHandler(currentPost = postsData.find(post => post.isMain === true)) {
-    postsData.find(post => post.isMain === true).isOn = true
-    state = 'ABOUT'
-    size = SIZE
+function updateState(newState, newSize, currentPost) {
+    currentPost.isOn = true
+    state = newState
+    size = newSize
     saveToLocalStorage()
-    render(size, currentPost)
-}
-
-function viewMoreBtnClickHandler() {
-    postsData.find(post => post.isMain === true).isOn = true
-    state = 'HOME'
-    size = postsData.length
-    saveToLocalStorage()
-    render(size)
+    render(newSize, currentPost)
 }
 
 /* give us the main article that were on at the moment and present it on the screen */
 function getMainArticle(currentPost) {
     let postStr = ''
-
-    if(state === 'HOME') {
+    if(state === STATES.HOME) {
         postStr = `<a href="#" id="main-post-container" data-post-uuid="${currentPost.uuid}" >
             <article id="main-post">
                 <p id="date">${currentPost.date}</p>
@@ -123,12 +115,12 @@ function getMainArticle(currentPost) {
             </article>
         </a>
         `
-    } else if(state === 'ARTICLE' || state === 'ABOUT') {
+    } else if(state === STATES.ARTICLE || state === STATES.ABOUT) {
         postStr += `
         <div id="post-container">
             <article>
         `
-        if(state === 'ARTICLE') {
+        if(state === STATES.ARTICLE) {
             postStr += `
                 <p id="date">${currentPost.date}</p>
                 <h2>${currentPost.title}</h2>
@@ -155,7 +147,6 @@ function getMainArticle(currentPost) {
             </article>
         </div>`
     }
-    saveToLocalStorage()
     return postStr
 }
 
@@ -163,7 +154,7 @@ function getPostsList(size, currentPost) {
     
     let postsStr = `<div id="posts">`
     
-    if(state === 'ARTICLE' || state === 'ABOUT') {
+    if(state === STATES.ARTICLE || state === STATES.ABOUT) {
         document.getElementById('recent-post-title').innerHTML = 'Recent posts'
     } else {
         document.getElementById('recent-post-title').innerHTML = ''
@@ -184,7 +175,7 @@ function getPostsList(size, currentPost) {
         `
     }).slice(0, size).join('')
 
-    if(state === 'HOME') {
+    if(state === STATES.HOME) {
         document.getElementById('btn-container').innerHTML = `
         <button id="btn" data-view-more-btn="view-more-btn" >View More</button>`
     } else {

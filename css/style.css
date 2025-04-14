@@ -18,8 +18,8 @@ nav {
 
 li {
     display: inline-block;
-
 }
+
 img{
     vertical-align: middle;
 }
@@ -90,6 +90,10 @@ img{
 /************************** LAYOUT *************************/
 
 #main-post-container {
+    display: block;
+    height: 295px;
+    color: white;
+
     --sz: min(2.5vw, 10.5vw); /* Responsive sizing based on viewport */
     --c0: #ffffff00;
     --c1: #bdd0e1;
@@ -99,7 +103,6 @@ img{
     
     margin: 0;
     padding: 0;
-    height: 100vh;
     overflow: hidden;
     background:
         repeating-conic-gradient(#3b354730 0.00001%, var(--c0) 0.00005%, var(--c0) 0.00035%, var(--c0) 0.00005%) var(--ts),
@@ -115,14 +118,6 @@ img{
         linear-gradient(150deg, var(--c0) 0 40%, var(--c3) calc(40% + 1px) 40.5%, var(--c0) calc(40.5% + 1px) 100%) var(--ts),
         linear-gradient(90deg, var(--c0) 0 50%, var(--c2) 0 75%, var(--c0) 0 100%) var(--ts),
         repeating-linear-gradient(90deg, var(--c1) 0 24.33%, var(--c3) 0 25%) var(--ts);
-    
-}
-
-#main-post-container {
-    display: block;
-    height: 295px;
-    /* background-size: cover; */
-    color: white;
     
 }
 
@@ -150,9 +145,8 @@ a {
 #posts-container {
     display: grid;
     grid-template-columns:1em 1fr 1em;
-    grid-template-areas: 
-        ".... blog ....";
-    margin: 1.65em 0em;
+    grid-template-areas: ".... blog ....";
+    margin: 1.65em 0;
 
 
 }
@@ -351,8 +345,7 @@ footer h3 {
     }
     #posts{
         grid-template-columns: repeat(3, 1fr) ;
-        grid-template-areas: 
-        'blog blog blog';
+        grid-template-areas: 'blog blog blog';
     }
     
     #posts-container {
@@ -381,10 +374,12 @@ footer h3 {
         padding-right:  7.8rem;
     }
 
+    /* for the post background in the post list */
     .post-image {
         height: 20vw;
     }
     
+    /* for the post page image itself */
     #post-container article .post-image {
         height: 50vw;
     }
