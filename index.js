@@ -175,6 +175,7 @@ function getPostsList(size, currentPost) {
         `
     }).slice(0, size).join('')
 
+    /*?? add functionality to view more button ??*/
     if(state === STATES.HOME) {
         document.getElementById('btn-container').innerHTML = `
         <button id="btn" data-view-more-btn="view-more-btn" >View More</button>`
